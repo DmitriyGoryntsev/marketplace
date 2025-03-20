@@ -4,6 +4,7 @@ go 1.23.1
 
 require (
 	github.com/go-playground/validator/v10 v10.25.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/labstack/echo/v4 v4.13.3

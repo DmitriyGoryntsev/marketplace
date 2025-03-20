@@ -10,6 +10,7 @@ import (
 
 	"github.com/DmitriyGoryntsev/marketplace/internal/config"
 	"github.com/DmitriyGoryntsev/marketplace/internal/transport/http"
+	jwt "github.com/DmitriyGoryntsev/marketplace/pkg/JWT"
 	"github.com/DmitriyGoryntsev/marketplace/pkg/logger"
 	"github.com/DmitriyGoryntsev/marketplace/pkg/postgres"
 	"go.uber.org/zap"
@@ -28,8 +29,15 @@ func main() {
 		logger.Fatal(ctx, "failed to read config", zap.Error(err))
 	}
 
+	//init jwt
+	jwtService := jwt.NewJWTService(
+		cfg.JWT.SecretKey,
+		time.Duration(cfg.JWT.AccessTokenExpiration)*time.Second,
+		time.Duration(cfg.JWT.RefreshTokenExpiration)*time.Second,
+	)
+
 	//init db
-	db, err := postgres.NewPostgres(cfg.DBConfig)
+	db, err := postgres.NewPostgres()
 	if err != nil {
 		logger.Fatal(ctx, "failed to connect to database", zap.Error(err))
 	}

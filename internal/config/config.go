@@ -22,10 +22,17 @@ type DBConfig struct {
 	Name     string `yaml:"name" env:"DB_NAME" env-default:"marketplace" validate:"required"`
 }
 
+type JWTConfig struct {
+	SecretKey              string `yaml:"secret_key" env:"JWT_SECRET_KEY" env-default:"secret-key-for-jwt" validate:"required"`
+	AccessTokenExpiration  int    `yaml:"access_token_expiry" env:"JWT_ACCESS_TOKEN_EXPIRY" env-default:"3600" validate:"required,numeric"`
+	RefreshTokenExpiration int    `yaml:"refresh_token_expiry" env:"JWT_REFRESH_TOKEN_EXPIRY" env-default:"604800" validate:"required,numeric"`
+}
+
 type Config struct {
 	Env        string     `yaml:"env" env:"ENV" env-default:"prod" validate:"oneof=dev prod test"`
 	HTTPServer HTTPServer `yaml:"http_server" validate:"required"`
 	DB         DBConfig   `yaml:"db" validate:"required"`
+	JWT        JWTConfig  `yaml:"jwt" validate:"required"`
 }
 
 func New() (*Config, error) {
